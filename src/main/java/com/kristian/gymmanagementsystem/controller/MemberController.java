@@ -24,6 +24,11 @@ public class MemberController {
         return memberService.addMember(member);
     }
 
+    @PutMapping("/{id}")
+    public Member updateMember(@PathVariable Long id, @RequestBody Member member){
+        return memberService.updateMember(id, member);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteMember(@PathVariable Long id){
         memberService.deleteMember(id);

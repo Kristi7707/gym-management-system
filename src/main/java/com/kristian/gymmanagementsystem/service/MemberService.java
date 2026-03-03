@@ -23,6 +23,16 @@ public class MemberService {
         return memberRepository.findById(id).orElseThrow();
     }
 
+    public Member updateMember(Long id, Member updatedMember){
+        Member existing = memberRepository.findById(id).orElseThrow();
+        existing.setName(updatedMember.getName());
+        existing.setEmail(updatedMember.getEmail());
+        existing.setPhone(updatedMember.getPhone());
+        existing.setMembershipType(updatedMember.getMembershipType());
+        existing.setActive(updatedMember.isActive());
+        return memberRepository.save(existing);
+    }
+
     public void deleteMember(Long id){
         memberRepository.deleteById(id);
     }
