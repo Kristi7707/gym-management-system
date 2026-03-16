@@ -1,6 +1,8 @@
 package com.kristian.gymmanagementsystem.model;
 import jakarta.persistence.*;
 import lombok.Data;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Data
 @Entity
@@ -15,4 +17,8 @@ public class Member {
     private String phone;
     private String membershipType;
     private boolean active;
+
+    @ManyToOne
+    @JoinColumn(name = "trainer_id")
+    private Trainer trainer;
 }

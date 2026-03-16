@@ -1,7 +1,9 @@
 package com.kristian.gymmanagementsystem.service;
 
 import com.kristian.gymmanagementsystem.model.Member;
+import com.kristian.gymmanagementsystem.model.Trainer;
 import com.kristian.gymmanagementsystem.repository.MemberRepository;
+import com.kristian.gymmanagementsystem.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,22 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final TrainerRepository trainerRepository;
+    public Member assignTrainer(Long memberId, Long trainerId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new RuntimeException("Trainer not found"));
+        member.setTrainer(trainer);
+        return memberRepository.save(member);
+    }
+
+    public Member unassignTrainer(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+        member.setTrainer(null);
+        return memberRepository.save(member);
+    }
     public Member addMember(Member member){
         return memberRepository.save(member);
     }

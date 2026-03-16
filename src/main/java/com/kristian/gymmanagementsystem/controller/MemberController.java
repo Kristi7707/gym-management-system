@@ -33,4 +33,14 @@ public class MemberController {
     public void deleteMember(@PathVariable Long id){
         memberService.deleteMember(id);
     }
+
+    @PutMapping("/{memberId}/assign-trainer/{trainerId}")
+    public Member assignTrainer(@PathVariable Long memberId, @PathVariable Long trainerId){
+        return memberService.assignTrainer(memberId, trainerId);
+    }
+
+    @PutMapping("/{memberId}/unassign-trainer")
+    public Member unassignTrainer(@PathVariable Long memberId){
+        return memberService.unassignTrainer(memberId);
+    }
 }
