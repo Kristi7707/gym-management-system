@@ -1,5 +1,6 @@
 package com.kristian.gymmanagementsystem.service;
 
+import com.kristian.gymmanagementsystem.exception.ResourceNotFoundException;
 import com.kristian.gymmanagementsystem.model.Attendance;
 import com.kristian.gymmanagementsystem.model.Member;
 import com.kristian.gymmanagementsystem.repository.AttendanceRepository;
@@ -28,7 +29,7 @@ public class AttendanceService {
 
     public Attendance checkOut(Long attendanceId) {
         Attendance attendance = attendanceRepository.findById(attendanceId)
-                .orElseThrow(() -> new RuntimeException("Attendance record not found"));
+                .orElseThrow(() ->  new ResourceNotFoundException("Attendance record with id " + attendanceId + " not found"));
         attendance.setCheckOutTime(LocalDateTime.now());
         return attendanceRepository.save(attendance);
     }

@@ -1,5 +1,6 @@
 package com.kristian.gymmanagementsystem.service;
 
+import com.kristian.gymmanagementsystem.exception.ResourceNotFoundException;
 import com.kristian.gymmanagementsystem.model.Member;
 import com.kristian.gymmanagementsystem.model.Trainer;
 import com.kristian.gymmanagementsystem.repository.MemberRepository;
@@ -15,34 +16,39 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final TrainerRepository trainerRepository;
+
     public Member assignTrainer(Long memberId, Long trainerId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + memberId + " not found"));
         Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow(() -> new RuntimeException("Trainer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Trainer with id " + trainerId + " not found"));
         member.setTrainer(trainer);
         return memberRepository.save(member);
     }
 
     public Member unassignTrainer(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + memberId + " not found"));
         member.setTrainer(null);
         return memberRepository.save(member);
     }
-    public Member addMember(Member member){
+
+    public Member addMember(Member member) {
         return memberRepository.save(member);
     }
-    public List<Member> getAllMembers(){
+
+    public List<Member> getAllMembers() {
         return memberRepository.findAll();
     }
 
-    public Member getMemberById(Long id){
-        return memberRepository.findById(id).orElseThrow();
+    public Member getMemberById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + id + " not found"));
     }
 
-    public Member updateMember(Long id, Member updatedMember){
-        Member existing = memberRepository.findById(id).orElseThrow();
+    public Member updateMember(Long id, Member updatedMember) {
+        Member existing = memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + id + " not found"));
         existing.setName(updatedMember.getName());
         existing.setEmail(updatedMember.getEmail());
         existing.setPhone(updatedMember.getPhone());
@@ -51,7 +57,7 @@ public class MemberService {
         return memberRepository.save(existing);
     }
 
-    public void deleteMember(Long id){
+    public void deleteMember(Long id) {
         memberRepository.deleteById(id);
     }
 }

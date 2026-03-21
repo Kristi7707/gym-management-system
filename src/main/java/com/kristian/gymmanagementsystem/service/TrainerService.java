@@ -1,5 +1,6 @@
 package com.kristian.gymmanagementsystem.service;
 
+import com.kristian.gymmanagementsystem.exception.ResourceNotFoundException;
 import com.kristian.gymmanagementsystem.model.Trainer;
 import com.kristian.gymmanagementsystem.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class TrainerService {
 
     public Trainer updateTrainer(Long id, Trainer updatedTrainer) {
         Trainer existing = trainerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Trainer not found"));
+                .orElseThrow(() ->  new ResourceNotFoundException("Trainer with id " + id + " not found"));
         existing.setName(updatedTrainer.getName());
         existing.setSpecialization(updatedTrainer.getSpecialization());
         existing.setPhone(updatedTrainer.getPhone());

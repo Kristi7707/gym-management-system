@@ -14,9 +14,16 @@ public class MemberController {
 
     private final MemberService memberService;
 
+
+
     @GetMapping
     public List<Member> getAllMembers(){
         return memberService.getAllMembers();
+    }
+
+    @GetMapping("/{id}")
+    public Member getMemberById(@PathVariable Long id) {
+        return memberService.getMemberById(id);
     }
 
     @PostMapping
