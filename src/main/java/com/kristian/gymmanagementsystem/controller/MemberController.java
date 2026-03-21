@@ -2,6 +2,7 @@ package com.kristian.gymmanagementsystem.controller;
 
 import com.kristian.gymmanagementsystem.model.Member;
 import com.kristian.gymmanagementsystem.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public Member addMember(@RequestBody Member member){
+    public Member addMember(@Valid @RequestBody Member member){
         return memberService.addMember(member);
     }
 
