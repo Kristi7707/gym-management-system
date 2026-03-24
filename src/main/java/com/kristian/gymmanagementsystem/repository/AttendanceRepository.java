@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findByMemberId(Long memberId);
+    void deleteByMemberId(Long memberId);
 }

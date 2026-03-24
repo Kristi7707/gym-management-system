@@ -3,6 +3,7 @@ package com.kristian.gymmanagementsystem.service;
 import com.kristian.gymmanagementsystem.exception.ResourceNotFoundException;
 import com.kristian.gymmanagementsystem.model.Member;
 import com.kristian.gymmanagementsystem.model.Trainer;
+import com.kristian.gymmanagementsystem.repository.AttendanceRepository;
 import com.kristian.gymmanagementsystem.repository.MemberRepository;
 import com.kristian.gymmanagementsystem.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final TrainerRepository trainerRepository;
+    private final AttendanceRepository attendanceRepository;
 
     public Member assignTrainer(Long memberId, Long trainerId) {
         Member member = memberRepository.findById(memberId)
@@ -58,6 +60,9 @@ public class MemberService {
     }
 
     public void deleteMember(Long id) {
+        memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + id + " not found"));
+        attendanceRepository.deleteByMemberId(id);
         memberRepository.deleteById(id);
     }
 }
