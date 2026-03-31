@@ -45,6 +45,18 @@ public class MemberService {
         }
         return memberRepository.save(member);
     }
+    public Member updateMember(Long id, Member updatedMember) {
+        Member existing = memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + id + " not found"));
+        existing.setName(updatedMember.getName());
+        existing.setEmail(updatedMember.getEmail());
+        existing.setPhone(updatedMember.getPhone());
+        existing.setMembershipType(updatedMember.getMembershipType());
+        existing.setActive(updatedMember.isActive());
+        existing.setStartDate(updatedMember.getStartDate());      // ← add this
+        existing.setExpiryDate(updatedMember.getExpiryDate());    // ← add this
+        return memberRepository.save(existing);
+    }
 
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
@@ -55,16 +67,7 @@ public class MemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("Member with id " + id + " not found"));
     }
 
-    public Member updateMember(Long id, Member updatedMember) {
-        Member existing = memberRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Member with id " + id + " not found"));
-        existing.setName(updatedMember.getName());
-        existing.setEmail(updatedMember.getEmail());
-        existing.setPhone(updatedMember.getPhone());
-        existing.setMembershipType(updatedMember.getMembershipType());
-        existing.setActive(updatedMember.isActive());
-        return memberRepository.save(existing);
-    }
+
 
     public void deleteMember(Long id) {
         memberRepository.findById(id)
