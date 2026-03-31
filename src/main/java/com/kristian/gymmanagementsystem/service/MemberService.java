@@ -8,7 +8,7 @@ import com.kristian.gymmanagementsystem.repository.MemberRepository;
 import com.kristian.gymmanagementsystem.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -36,6 +36,13 @@ public class MemberService {
     }
 
     public Member addMember(Member member) {
+        member.setStartDate(LocalDate.now());
+        switch (member.getMembershipType().toLowerCase()) {
+            case "monthly" -> member.setExpiryDate(LocalDate.now().plusMonths(1));
+            case "3 months" -> member.setExpiryDate(LocalDate.now().plusMonths(3));
+            case "yearly" -> member.setExpiryDate(LocalDate.now().plusYears(1));
+            default -> member.setExpiryDate(LocalDate.now().plusMonths(1));
+        }
         return memberRepository.save(member);
     }
 
