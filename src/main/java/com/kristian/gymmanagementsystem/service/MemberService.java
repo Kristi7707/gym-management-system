@@ -51,10 +51,15 @@ public class MemberService {
         existing.setName(updatedMember.getName());
         existing.setEmail(updatedMember.getEmail());
         existing.setPhone(updatedMember.getPhone());
-        existing.setMembershipType(updatedMember.getMembershipType());
         existing.setActive(updatedMember.isActive());
-        existing.setStartDate(updatedMember.getStartDate());      // ← add this
-        existing.setExpiryDate(updatedMember.getExpiryDate());    // ← add this
+        existing.setMembershipType(updatedMember.getMembershipType());
+        existing.setStartDate(LocalDate.now());
+        switch (updatedMember.getMembershipType().toLowerCase()) {
+            case "monthly" -> existing.setExpiryDate(LocalDate.now().plusMonths(1));
+            case "3 months" -> existing.setExpiryDate(LocalDate.now().plusMonths(3));
+            case "yearly" -> existing.setExpiryDate(LocalDate.now().plusYears(1));
+            default -> existing.setExpiryDate(LocalDate.now().plusMonths(1));
+        }
         return memberRepository.save(existing);
     }
 
