@@ -36,12 +36,13 @@ public class MemberService {
     }
 
     public Member addMember(Member member) {
-        member.setStartDate(LocalDate.now());
+        LocalDate start = member.getStartDate() != null ? member.getStartDate() : LocalDate.now();
+        member.setStartDate(start);
         switch (member.getMembershipType().toLowerCase()) {
-            case "monthly" -> member.setExpiryDate(LocalDate.now().plusMonths(1));
-            case "3 months" -> member.setExpiryDate(LocalDate.now().plusMonths(3));
-            case "yearly" -> member.setExpiryDate(LocalDate.now().plusYears(1));
-            default -> member.setExpiryDate(LocalDate.now().plusMonths(1));
+            case "monthly" -> member.setExpiryDate(start.plusMonths(1));
+            case "3 months" -> member.setExpiryDate(start.plusMonths(3));
+            case "yearly" -> member.setExpiryDate(start.plusYears(1));
+            default -> member.setExpiryDate(start.plusMonths(1));
         }
         return memberRepository.save(member);
     }
